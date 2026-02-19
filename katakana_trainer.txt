@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <title>Hiragana Trainer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+	.symbol {
+    		font-family: 'Noto Sans JP', sans-serif;
+    		font-size: 120px;
+	}
+
+        input {
+            font-size: 20px;
+            padding: 5px;
+        }
+        button {
+            font-size: 18px;
+            padding: 5px 15px;
+            margin: 10px;
+        }
+        .result {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Hiragana & Katakana Trainer</h1>
+
+<div>
+    <label>
+        <input type="radio" name="mode" value="hiragana" checked>
+        Hiragana
+    </label>
+    <label>
+        <input type="radio" name="mode" value="katakana">
+        Katakana
+    </label>
+</div>
+
+<div class="symbol" id="symbol">ア</div>
+
+<input type="text" id="answer" placeholder="Napiš přepis...">
+<br>
+<button onclick="checkAnswer()">Zkontrolovat</button>
+
+<div class="result" id="result"></div>
+
+<script>
+const katakana = [
+    {symbol:"ア", romaji:"a", weight:1},{symbol:"イ", romaji:"i", weight:1},{symbol:"ウ", romaji:"u", weight:1},{symbol:"エ", romaji:"e", weight:1},{symbol:"オ", romaji:"o", weight:1},
+
+    {symbol:"カ", romaji:"ka", weight:1},{symbol:"キ", romaji:"ki", weight:1},{symbol:"ク", romaji:"ku", weight:1},{symbol:"ケ", romaji:"ke", weight:1},{symbol:"コ", romaji:"ko", weight:1},
+
+    {symbol:"サ", romaji:"sa", weight:1},{symbol:"シ", romaji:"shi", weight:1},{symbol:"ス", romaji:"su", weight:1},{symbol:"セ", romaji:"se", weight:1},{symbol:"ソ", romaji:"so", weight:1},
+
+    {symbol:"タ", romaji:"ta", weight:1},{symbol:"チ", romaji:"chi", weight:1},{symbol:"ツ", romaji:"tsu", weight:1},{symbol:"テ", romaji:"te", weight:1},{symbol:"ト", romaji:"to", weight:1},
+
+    {symbol:"ナ", romaji:"na", weight:1},{symbol:"ニ", romaji:"ni", weight:1},{symbol:"ヌ", romaji:"nu", weight:1},{symbol:"ネ", romaji:"ne", weight:1},{symbol:"ノ", romaji:"no", weight:1},
+
+    {symbol:"ハ", romaji:"ha", weight:1},{symbol:"ヒ", romaji:"hi", weight:1},{symbol:"フ", romaji:"fu", weight:1},{symbol:"ヘ", romaji:"he", weight:1},{symbol:"ホ", romaji:"ho", weight:1},
+
+    {symbol:"マ", romaji:"ma", weight:1},{symbol:"ミ", romaji:"mi", weight:1},{symbol:"ム", romaji:"mu", weight:1},{symbol:"メ", romaji:"me", weight:1},{symbol:"モ", romaji:"mo", weight:1},
+
+    {symbol:"ヤ", romaji:"ya", weight:1},{symbol:"ユ", romaji:"yu", weight:1},{symbol:"ヨ", romaji:"yo", weight:1},
+
+    {symbol:"ラ", romaji:"ra", weight:1},{symbol:"リ", romaji:"ri", weight:1},{symbol:"ル", romaji:"ru", weight:1},{symbol:"レ", romaji:"re", weight:1},{symbol:"ロ", romaji:"ro", weight:1},
+
+    {symbol:"ワ", romaji:"wa", weight:1},{symbol:"ヲ", romaji:"wo", weight:1},{symbol:"ン", romaji:"n", weight:1}
+];
+
+const hiragana = [
+    {symbol:"あ", romaji:"a", weight:1},{symbol:"い", romaji:"i", weight:1},{symbol:"う", romaji:"u", weight:1},{symbol:"え", romaji:"e", weight:1},{symbol:"お", romaji:"o", weight:1},
+
+    {symbol:"か", romaji:"ka", weight:1},{symbol:"き", romaji:"ki", weight:1},{symbol:"く", romaji:"ku", weight:1},{symbol:"け", romaji:"ke", weight:1},{symbol:"こ", romaji:"ko", weight:1},
+
+    {symbol:"さ", romaji:"sa", weight:1},{symbol:"し", romaji:"shi", weight:1},{symbol:"す", romaji:"su", weight:1},{symbol:"せ", romaji:"se", weight:1},{symbol:"そ", romaji:"so", weight:1},
+
+    {symbol:"た", romaji:"ta", weight:1},{symbol:"ち", romaji:"chi", weight:1},{symbol:"つ", romaji:"tsu", weight:1},{symbol:"て", romaji:"te", weight:1},{symbol:"と", romaji:"to", weight:1},
+
+    {symbol:"な", romaji:"na", weight:1},{symbol:"に", romaji:"ni", weight:1},{symbol:"ぬ", romaji:"nu", weight:1},{symbol:"ね", romaji:"ne", weight:1},{symbol:"の", romaji:"no", weight:1},
+
+    {symbol:"は", romaji:"ha", weight:1},{symbol:"ひ", romaji:"hi", weight:1},{symbol:"ふ", romaji:"fu", weight:1},{symbol:"へ", romaji:"he", weight:1},{symbol:"ほ", romaji:"ho", weight:1},
+
+    {symbol:"ま", romaji:"ma", weight:1},{symbol:"み", romaji:"mi", weight:1},{symbol:"む", romaji:"mu", weight:1},{symbol:"め", romaji:"me", weight:1},{symbol:"も", romaji:"mo", weight:1},
+
+    {symbol:"や", romaji:"ya", weight:1},{symbol:"ゆ", romaji:"yu", weight:1},{symbol:"よ", romaji:"yo", weight:1},
+
+    {symbol:"ら", romaji:"ra", weight:1},{symbol:"り", romaji:"ri", weight:1},{symbol:"る", romaji:"ru", weight:1},{symbol:"れ", romaji:"re", weight:1},{symbol:"ろ", romaji:"ro", weight:1},
+
+    {symbol:"わ", romaji:"wa", weight:1},{symbol:"を", romaji:"wo", weight:1},{symbol:"ん", romaji:"n", weight:1},
+    // Dakuten (゛)
+{symbol:"が", romaji:"ga", weight:1},{symbol:"ぎ", romaji:"gi", weight:1},{symbol:"ぐ", romaji:"gu", weight:1},{symbol:"げ", romaji:"ge", weight:1},{symbol:"ご", romaji:"go", weight:1},
+
+{symbol:"ざ", romaji:"za", weight:1},{symbol:"じ", romaji:"ji", weight:1},{symbol:"ず", romaji:"zu", weight:1},{symbol:"ぜ", romaji:"ze", weight:1},{symbol:"ぞ", romaji:"zo", weight:1},
+
+{symbol:"だ", romaji:"da", weight:1},{symbol:"ぢ", romaji:"ji", weight:1},{symbol:"づ", romaji:"zu", weight:1},{symbol:"で", romaji:"de", weight:1},{symbol:"ど", romaji:"do", weight:1},
+
+{symbol:"ば", romaji:"ba", weight:1},{symbol:"び", romaji:"bi", weight:1},{symbol:"ぶ", romaji:"bu", weight:1},{symbol:"べ", romaji:"be", weight:1},{symbol:"ぼ", romaji:"bo", weight:1},
+
+// Handakuten (゜)
+{symbol:"ぱ", romaji:"pa", weight:1},{symbol:"ぴ", romaji:"pi", weight:1},{symbol:"ぷ", romaji:"pu", weight:1},{symbol:"ぺ", romaji:"pe", weight:1},{symbol:"ぽ", romaji:"po", weight:1}
+
+];
+
+let currentSet = hiragana;
+let current = null;
+
+document.getElementById("answer").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        checkAnswer();
+    }
+});
+
+function generateSymbol() {
+    const totalWeight = currentSet.reduce((sum, item) => sum + item.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (let item of currentSet) {
+        random -= item.weight;
+        if (random <= 0) {
+            current = item;
+            break;
+        }
+    }
+
+    document.getElementById("symbol").textContent = current.symbol;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").textContent = "";
+}
+
+document.querySelectorAll('input[name="mode"]').forEach(radio => {
+    radio.addEventListener("change", function() {
+        if (this.value === "hiragana") {
+            currentSet = hiragana;
+        } else {
+            currentSet = katakana;
+        }
+        generateSymbol();
+    });
+});
+
+function checkAnswer() {
+    const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
+
+if (userAnswer === current.romaji) {
+    current.weight = Math.max(1, current.weight - 1);
+    document.getElementById("result").textContent = "✔ Správně!";
+    document.getElementById("result").style.color = "green";
+    setTimeout(generateSymbol, 800);
+} else {
+    current.weight += 2;
+    document.getElementById("result").textContent = "❌ Správně je: " + current.romaji;
+    document.getElementById("result").style.color = "red";
+    setTimeout(generateSymbol, 1500);
+}
+
+}
+
+generateSymbol();
+
+</script>
+
+</body>
+</html>

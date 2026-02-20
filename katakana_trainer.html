@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <title>Hiragana Trainer</title>
+    <title>Hiragana & Katakana Trainer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin-top: 100px;
         }
-	.symbol {
+	    .symbol {
     		font-family: 'Noto Sans JP', sans-serif;
     		font-size: 120px;
-	}
+	    }   
 
         input {
             font-size: 20px;
@@ -30,9 +30,10 @@
         }
     </style>
 </head>
+
 <body>
 
-<h1>Hiragana Trainer</h1>
+<h1>Hiragana & Katakana Trainer</h1>
 
 <div>
     <label>
@@ -44,7 +45,9 @@
         Katakana
     </label>
 </div>
-
+<div id="stats">
+    Úspěšnost: 0% (0 / 0)
+</div>
 <div class="symbol" id="symbol">ア</div>
 
 <input type="text" id="answer" placeholder="Napiš přepis (např. a)">
@@ -149,6 +152,7 @@ document.querySelectorAll('input[name="mode"]').forEach(radio => {
 });
 
 function checkAnswer() {
+    totalCount++;
     const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
 
 if (userAnswer === current.romaji) {
@@ -156,12 +160,24 @@ if (userAnswer === current.romaji) {
     document.getElementById("result").textContent = "✔ Správně!";
     document.getElementById("result").style.color = "green";
     setTimeout(generateSymbol, 800);
+    correctCount++;
+    updateStats();
 } else {
     current.weight += 2;
     document.getElementById("result").textContent = "❌ Správně je: " + current.romaji;
     document.getElementById("result").style.color = "red";
     setTimeout(generateSymbol, 1500);
+    updateStats();
 }
+
+function updateStats() {
+    const percent = totalCount === 0 ? 0 : Math.round((correctCount / totalCount) * 100);
+    document.getElementById("stats").textContent =
+        `Úspěšnost: ${percent}% (${correctCount} / ${totalCount})`;
+}
+
+let streak = 0;
+let bestStreak = 0;
 
 }
 

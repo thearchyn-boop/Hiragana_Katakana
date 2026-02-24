@@ -115,6 +115,10 @@ const hiragana = [
 
 let currentSet = hiragana;
 let current = null;
+let totalCount = 0;
+let correctCount = 0;
+let streak = 0;
+let bestStreak = 0;
 
 document.getElementById("answer").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -176,8 +180,6 @@ function updateStats() {
         `Úspěšnost: ${percent}% (${correctCount} / ${totalCount})`;
 }
 
-let streak = 0;
-let bestStreak = 0;
 
 }
 

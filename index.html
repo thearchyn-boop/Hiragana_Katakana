@@ -93,12 +93,6 @@ button:hover {
 
 <h1>Hiragana & Katakana Trainer</h1>
 
-<div id="modeSwitch">
-  <button onclick="setMode('beginner')">🌱 Beginner</button>
-  <button onclick="setMode('random')">🎲 Random</button>
-</div>
-
-
 <div class="card">
     <div id="stats">
         Úspěšnost: 0% (0 / 0)
@@ -179,9 +173,6 @@ const hiragana = [
 {symbol:"ぱ", romaji:"pa", weight:1},{symbol:"ぴ", romaji:"pi", weight:1},{symbol:"ぷ", romaji:"pu", weight:1},{symbol:"ぺ", romaji:"pe", weight:1},{symbol:"ぽ", romaji:"po", weight:1}
 
 ];
-let reviewQueue = [];
-let questionCounter = 0;
-let mode = "random";
 let currentSet = hiragana;
 let current = null;
 let totalCount = 0;
@@ -195,16 +186,6 @@ document.getElementById("answer").addEventListener("keydown", function(event) {
         checkAnswer();
     }
 });
-
-function setMode(newMode){
-mode = newMode;
-correct = 0;
-total = 0;
-if(mode === "beginner"){
-lessonLevel = 0;
-}
-nextKana();
-}
 
 function generateSymbol() {
     const totalWeight = currentSet.reduce((sum, item) => sum + item.weight, 0);
@@ -235,10 +216,6 @@ document.querySelectorAll('input[name="mode"]').forEach(radio => {
 });
 
 function checkAnswer() {
-    reviewQueue.push({
-    kana: currentKana,
-    showAfter: questionCounter + 3
-    });
     totalCount++;
     const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
 
@@ -263,45 +240,6 @@ function updateStats() {
         `Úspěšnost: ${percent}% (${correctCount} / ${totalCount})`;
     }
 }
-
-function displayKana(){
-document.getElementById("kanaDisplay").innerText = currentKana.char;
-document.getElementById("answerInput").value = "";
-}
-
-function nextKana(){
-
-questionCounter++;
-
-for(let i = 0; i < reviewQueue.length; i++){
-if(reviewQueue[i].showAfter <= questionCounter){
-currentKana = reviewQueue[i].kana;
-reviewQueue.splice(i,1);
-displayKana();
-return;
-}
-}
-
-let pool;
-
-if(mode === "beginner"){
-pool = getKanaPool();
-}else{
-pool = hiragana.concat(katakana);
-}
-
-currentKana = pool[Math.floor(Math.random()*pool.length)];
-
-displayKana();
-}
-
-if(mode === "random"){
-localStorage.setItem("correct", correct);
-localStorage.setItem("total", total);
-}
-
-correct = parseInt(localStorage.getItem("correct")) || 0;
-total = parseInt(localStorage.getItem("total")) || 0;
 
 generateSymbol();
 

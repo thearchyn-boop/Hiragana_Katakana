@@ -318,17 +318,11 @@
                 }
                 currentSet = newSet;
             }
-            
+
             function speakKana(text){
-                const voices = speechSynthesis.getVoices();
-                const japaneseVoice = voices.find(v => v.lang === "ja-JP");
                 const utterance = new SpeechSynthesisUtterance(text);
-                if (japaneseVoice) {
-                    utterance.voice = japaneseVoice;
-                }
                 utterance.lang = "ja-JP";
-                utterance.rate = 0.2;
-                utterance.pitch = 1;
+                utterance.rate = 0.9;
                 speechSynthesis.speak(utterance);
             }
 

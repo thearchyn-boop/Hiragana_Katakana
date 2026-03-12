@@ -97,6 +97,9 @@
                 Úspěšnost: 0% (0 / 0)
             </div>
 
+            <button onclick="setMode('beginner')">🌱 Beginner</button>
+            <button onclick="setMode('random')">🎲 Random</button>
+
             <div class="mode-switch">
                 <label>
                     <input type="radio" name="mode" value="hiragana" checked>
@@ -170,7 +173,14 @@
                 {symbol:"ば", romaji:"ba", weight:1},{symbol:"び", romaji:"bi", weight:1},{symbol:"ぶ", romaji:"bu", weight:1},{symbol:"べ", romaji:"be", weight:1},{symbol:"ぼ", romaji:"bo", weight:1},
         // Handakuten (゜)
                 {symbol:"ぱ", romaji:"pa", weight:1},{symbol:"ぴ", romaji:"pi", weight:1},{symbol:"ぷ", romaji:"pu", weight:1},{symbol:"ぺ", romaji:"pe", weight:1},{symbol:"ぽ", romaji:"po", weight:1}
+            ];
 
+            const beginnerKana = [
+                {symbol:"あ", romaji:"a", weight:1},
+                {symbol:"い", romaji:"i", weight:1},
+                {symbol:"う", romaji:"u", weight:1},
+                {symbol:"え", romaji:"e", weight:1},
+                {symbol:"お", romaji:"o", weight:1}
             ];
 
             let currentSet = hiragana;
@@ -179,6 +189,7 @@
             let correctCount = 0;
             let streak = 0;
             let bestStreak = 0;
+            let difficultyMode = "random";
 
             document.getElementById("answer").addEventListener("keydown", function(event) {
                 if (event.key === "Enter") {
@@ -186,6 +197,20 @@
                     checkAnswer();
                 }
             });
+
+            function setMode(mode) {
+
+                difficultyMode = mode;
+
+                if (mode === "beginner") {
+                    currentSet = beginnerKana;
+                } else {
+                    const selected = document.querySelector('input[name="mode"]:checked').value;
+                    currentSet = selected === "hiragana" ? hiragana : katakana;
+                }
+
+                generateSymbol();
+            }
 
             function generateSymbol() {
                 const totalWeight = currentSet.reduce((sum, item) => sum + item.weight, 0);
@@ -206,10 +231,12 @@
 
             document.querySelectorAll('input[name="mode"]').forEach(radio => {
                 radio.addEventListener("change", function() {
-                    if (this.value === "hiragana") {
-                        currentSet = hiragana;
-                    } else {
-                        currentSet = katakana;
+                    if (difficultyMode === "random") {
+                        if (this.value === "hiragana") {
+                            currentSet = hiragana;
+                        } else {
+                            currentSet = katakana;
+                        }
                     }
                     generateSymbol();
                 });

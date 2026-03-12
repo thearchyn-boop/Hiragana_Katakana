@@ -318,7 +318,7 @@
                 }
                 currentSet = newSet;
             }
-
+            
             function speakKana(text){
                 const voices = speechSynthesis.getVoices();
                 const japaneseVoice = voices.find(v => v.lang === "ja-JP");
@@ -393,7 +393,7 @@
                 if (difficultyMode === "beginner") {
                     if (
                         totalCount >= MIN_ANSWERS_FOR_UNLOCK &&
-                        percent >= 90 &&
+                        percent >= 80 &&
                         unlockedRows < beginnerRows.length
                     ) {
                         unlockedRows++;

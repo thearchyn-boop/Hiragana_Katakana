@@ -231,7 +231,7 @@
                     {symbol:"つ", romaji:"tsu", weight:1},
                     {symbol:"て", romaji:"te", weight:1},
                     {symbol:"と", romaji:"to", weight:1}
-                ]
+                ],
                 [
                     {symbol:"な", romaji:"na", weight:1},
                     {symbol:"に", romaji:"ni", weight:1},
@@ -287,6 +287,8 @@
             let bestStreak = 0;
             let difficultyMode = "random";
             let unlockedRows = 1;
+            let levelTotal = 0;
+            let levelCorrect = 0;
             const MIN_ANSWERS_FOR_UNLOCK = 10;
 
             document.getElementById("answer").addEventListener("keydown", function(event) {
@@ -364,6 +366,9 @@
 
             function checkAnswer() {
                 totalCount++;
+                if (difficultyMode === "beginner") {
+                    levelTotal++;
+                }
                 const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
 
                 if (userAnswer === current.romaji) {
@@ -372,6 +377,9 @@
                     document.getElementById("result").style.color = "green";
                     setTimeout(generateSymbol, 800);
                     correctCount++;
+                    if (difficultyMode === "beginner") {
+                        levelCorrect++;
+                    }
                     updateStats();
                 } else {
                     current.weight += 2;
@@ -383,18 +391,25 @@
             }
 
             function updateStats() {
-                const percent = totalCount === 0 ? 0 : Math.round((correctCount / totalCount) * 100);
-                if (difficultyMode === "beginner") {
-                    if (
-                        totalCount >= MIN_ANSWERS_FOR_UNLOCK &&
-                        percent >= 80 &&
-                        unlockedRows < beginnerRows.length
-                    ) {
-                        unlockedRows++;
-                        updateBeginnerSet();
-                        document.getElementById("result").textContent =
+                const percent = totalCount === 0
+                    ? 0
+                    : Math.round((correctCount / totalCount) * 100);
+                const levelPercent = levelTotal === 0
+                    ? 0
+                    : Math.round((levelCorrect / levelTotal) * 100);
+                if (
+                    difficultyMode === "beginner" &&
+                    levelTotal >= MIN_ANSWERS_FOR_UNLOCK &&
+                    levelPercent >= 80 &&
+                    unlockedRows < beginnerRows.length
+                ) {
+                    unlockedRows++;
+                    updateBeginnerSet();
+                    // RESET level statistiky
+                    levelTotal = 0;
+                    levelCorrect = 0;
+                    document.getElementById("result").textContent =
                         "🌸 Odemčena nová řada!";
-                    }
                 }
                 document.getElementById("stats").textContent =
                     `Úspěšnost: ${percent}% (${correctCount} / ${totalCount})`;

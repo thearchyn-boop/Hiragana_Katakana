@@ -110,7 +110,7 @@
     </head>
 
     <body>
-        <h1>Hiragana & Katakana Trainer</h1>
+        <h1>🌸 Hiragana & Katakana Trainer 🌸</h1>
 
         <div class="card">
             <div class="mode-switch">
@@ -315,9 +315,20 @@
             }
 
             function updateBeginnerSet() {
-                let newSet = [];
+                    let newSet = [];
                 for (let i = 0; i < unlockedRows; i++) {
-                    newSet = newSet.concat(beginnerRows[i]);
+                    let row = beginnerRows[i];
+                    row.forEach(item => {
+                        let copy = {
+                            symbol: item.symbol,
+                            romaji: item.romaji,
+                            weight: item.weight
+                        };
+                        if (i === unlockedRows - 1) {
+                            copy.weight = copy.weight * 3;
+                        }
+                        newSet.push(copy);
+                    });
                 }
                 currentSet = newSet;
             }

@@ -281,6 +281,7 @@
 
             let currentSet = hiragana;
             let current = null;
+            let lastSymbol = null;
             let totalCount = 0;
             let correctCount = 0;
             let streak = 0;
@@ -329,16 +330,25 @@
             }
 
             function generateSymbol() {
-                const totalWeight = currentSet.reduce((sum, item) => sum + item.weight, 0);
-                let random = Math.random() * totalWeight;
-
-                for (let item of currentSet) {
-                    random -= item.weight;
-                    if (random <= 0) {
-                        current = item;
-                        break;
+                let candidate = null;
+                do {
+                    const totalWeight =
+                        currentSet.reduce((sum, item) => sum + item.weight, 0);
+                    let random = Math.random() * totalWeight;
+                    for (let item of currentSet) {
+                        random -= item.weight;
+                        if (random <= 0) {
+                            candidate = item;
+                            break;
+                        }
                     }
-                }
+                } while (
+                    candidate &&
+                    candidate.symbol === lastSymbol &&
+                    currentSet.length > 1
+                );
+                current = candidate;
+                lastSymbol = current.symbol;
 
                 document.getElementById("symbol").textContent = current.symbol;
                 if (difficultyMode === "dictation") {
@@ -400,7 +410,7 @@
                 if (
                     difficultyMode === "beginner" &&
                     levelTotal >= MIN_ANSWERS_FOR_UNLOCK &&
-                    levelPercent >= 80 &&
+                    levelPercent >= 95 &&
                     unlockedRows < beginnerRows.length
                 ) {
                     unlockedRows++;

@@ -106,10 +106,63 @@
                 background:linear-gradient(90deg,#BC002D,#ff4d6d);
                 transition:width 0.4s;
             }
+            .dark body{
+                background:#111;
+                color:#eee;
+            }
+
+            .dark .card{
+                background:#1b1b1b;
+                box-shadow:0 10px 30px rgba(0,0,0,0.6);
+            }
+
+            .dark input{
+                background:#222;
+                color:white;
+                border:2px solid #444;
+            }
+
+            .dark input:focus{
+                border-color:#ff6b8a;
+            }
+
+            .dark #stats{
+                background:linear-gradient(135deg,#6b0018,#c2185b);
+            }
+
+            .dark #progressContainer{
+                background:#333;
+            }
+            #darkToggle{
+                position:fixed;
+                top:20px;
+                right:20px;
+                width:50px;
+                height:50px;
+                border-radius:50%;
+                border:none;
+                background:#BC002D;
+                color:white;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:22px;
+                line-height:1;
+                cursor:pointer;
+                box-shadow:0 8px 20px rgba(0,0,0,0.25);
+                z-index:1000;
+                transition:0.2s;
+            }
+
+            #darkToggle:hover{
+                transform:scale(1.08);
+                background:#990022;
+            }
         </style>
     </head>
 
     <body>
+        <button id="darkToggle" onclick="toggleDarkMode()">🌙</button>
         <h1>🌸 Hiragana & Katakana Trainer 🌸</h1>
 
         <div class="card">
@@ -454,7 +507,15 @@
                     document.getElementById("progressBar").style.width = "0%";
                 }
             }
-
+            function toggleDarkMode(){
+                document.documentElement.classList.toggle("dark");
+                const isDark =
+                    document.documentElement.classList.contains("dark");
+                localStorage.setItem("darkMode", isDark);
+            }
+            if (localStorage.getItem("darkMode") === "true"){
+                document.documentElement.classList.add("dark");
+            }
             generateSymbol();
         </script>
     </body>

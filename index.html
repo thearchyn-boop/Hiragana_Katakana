@@ -155,12 +155,21 @@
             }
 
             .symbol {
-                font-size:64px;
+                font-size:96px;
+                margin: 10px 0;
                 font-weight:bold;
                 text-align:center;
                 line-height:1.2;
                 word-break:break-word;
                 overflow-wrap:break-word;
+            }
+
+            .word-mode {
+                font-size: 56px;
+                line-height: 1.4;
+                text-align: center;
+                word-break: break-word;
+                letter-spacing: 2px;
             }
 
             input {
@@ -367,6 +376,14 @@
                 background:#ff4d6d !important;
                 box-shadow:0 0 15px rgba(255,77,109,0.6);
             }
+
+            #appVersion{
+                position: fixed;
+                bottom: 10px;
+                right: 15px;
+                font-size: 12px;
+                opacity: 0.6;
+            }
         </style>
     </head>
 
@@ -429,6 +446,7 @@
 
                 <div class="result" id="result"></div>
             </div>
+            <div id="appVersion">v0.5.1</div>
         </div>
 
         <script>
@@ -737,7 +755,12 @@
             function generateSymbol() {
                 if (difficultyMode === "words"){
                     current = wordList[Math.floor(Math.random()*wordList.length)];
-                    document.getElementById("symbol").textContent = current.kana;
+
+                    const symbolEl = document.getElementById("symbol");
+                    symbolEl.textContent = current.kana;
+                    
+                    symbolEl.classList.add("word-mode");
+
                     document.getElementById("answer").value = "";
                     document.getElementById("result").textContent = "";
                     return;
@@ -762,7 +785,10 @@
                 current = candidate;
                 lastSymbol = current.symbol;
 
-                document.getElementById("symbol").textContent = current.symbol;
+                const symbolEl = document.getElementById("symbol");
+                    symbolEl.textContent = current.symbol;
+                    symbolEl.classList.remove("word-mode");
+
                 if (difficultyMode === "dictation") {
                     document.getElementById("symbol").textContent = "？";
                     setTimeout(() => {

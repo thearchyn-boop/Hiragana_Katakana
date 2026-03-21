@@ -17,28 +17,157 @@
                 margin-bottom: 20px;
             }
 
+            .icon{
+                font-size:22px;
+                min-width:22px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+            }
+
+            .app-Layout {
+                position: relative;
+                width:fit-content;
+                margin:0 auto;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .sidebar.left{
+                position:absolute;
+                left:-50px;
+                top:32%;
+                transform:translateY(-50%);
+                display:flex;
+                flex-direction:column;
+                gap:6px;
+                z-index:1;
+            }
+
+            .sidebar.right{
+                position:absolute;
+                right:-50px;
+                top:15%;
+                transform:translateY(-50%);
+                align-items:flex-end;
+
+                display:flex;
+                flex-direction:column;
+                gap:6px;
+
+                width:50px;
+                z-index:2;
+            }
+
+            .sidebar.left button{
+                width:55px;
+                height:55px;
+                font-size:20px;
+                display:flex;
+                align-items:center;
+                justify-content:flex-start; 
+
+                gap:10px;
+
+                padding-left:14px;
+
+                border-radius:12px 0 0 12px;
+
+                overflow:hidden;
+
+                transition:0.3s;
+                box-shadow:0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .sidebar.right button{
+                width:65px;
+                min-width: 55px;
+                height:55px;
+                position: relative;
+                font-size:20px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                gap:10px;
+                border-radius:0 12px 12px 0;
+
+                background:#BC002D;
+                color:white;
+
+                overflow:hidden;
+
+                transition: 0.3s;
+                box-shadow:0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .sidebar.left button .label{
+                white-space:nowrap;
+                opacity:0;
+                transform:translateX(-10px);
+                transition:0.3s;
+            }
+
+            .sidebar.right button .label{
+                position:absolute;
+                right:45px; 
+                opacity:0;
+                transform:translateX(10px);
+                transition:0.3s;
+            }
+
+            .sidebar.left button:hover{
+                transform:translateX(-100px);
+                width:160px;
+                background:#ff4d6d;
+            }
+
+            .sidebar.right button:hover{
+                transform:translateX(80px);
+                justify-content:flex-end;
+                padding-right:20px;
+                width:160px;
+                background:#ff4d6d;
+            }
+
+            .sidebar.left button:hover .label{
+                opacity:1;
+                transform:translateX(0);
+            }
+
+            .sidebar.right button:hover .label{
+                opacity:1;
+                transform:translateX(0);
+            }
+
             .card {
                 background: white;
-                width: 400px;
+                width: 520px;
                 margin: auto;
                 padding: 30px;
                 border-radius: 16px;
                 box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                gap:15px;
+                position: relative;
+                z-index: 3;
             }
 
             .symbol {
-                font-size: 110px;
-                margin: 20px 0;
+                font-size:64px;
+                font-weight:bold;
+                text-align:center;
+                line-height:1.2;
+                word-break:break-word;
+                overflow-wrap:break-word;
             }
 
             input {
-                font-size: 20px;
-                padding: 10px;
-                width: 70%;
-                border-radius: 8px;
-                border: 2px solid #ddd;
-                outline: none;
-                transition: 0.2s;
+                font-size: 18px;
+                padding: 12px;
+                width: 85%;
+                margin-top: 10px;
             }
 
             input:focus {
@@ -46,15 +175,37 @@
             }
 
             button {
+                display:flex;
+                align-items:center;
+                justify-content:center;
                 margin-top: 15px;
-                font-size: 18px;
-                padding: 8px 20px;
-                border-radius: 8px;
+                font-size: 16px;
+                padding: 10px 16px;
+                border-radius: 10px;
                 border: none;
                 background-color: #BC002D;
                 color: white;
                 cursor: pointer;
                 transition: 0.2s;
+            }
+
+            .mode-buttons{
+                display:flex;
+                flex-wrap:wrap;
+                justify-content:center;
+                gap:10px;
+                margin-bottom:20px;
+            }
+
+            .mode-buttons button{
+                width:48px;
+                height:48px;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                border-radius:12px;
+                font-size:18px;
+                padding:0;
             }
 
             button:hover {
@@ -74,6 +225,7 @@
                 margin-top: 15px;
                 font-size: 20px;
                 font-weight: bold;
+                min-height: 28px;
             }
             .mode-switch {
                 display: flex;
@@ -133,6 +285,43 @@
             .dark #progressContainer{
                 background:#333;
             }
+
+            .top-bar{
+                display:flex;
+                flex-direction:column;
+                gap:10px;
+                width:100%;
+            }
+
+            #statsBox{
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                gap:6px;
+            }
+
+            .main-content{
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                min-height:120px;
+                transition: 0.5s;
+            }
+
+            .input-area{
+                display:flex;
+                gap:10px;
+                width:100%;
+            }
+
+            .input-area input{
+                flex:1;
+            }
+
+            .input-area button{
+                min-width:70px;
+            }
+
             #darkToggle{
                 position:fixed;
                 top:20px;
@@ -158,6 +347,26 @@
                 transform:scale(1.08);
                 background:#990022;
             }
+
+            #progressText{
+                min-height: 20px;
+            }
+
+            #progressContainer{
+                height: 14px;
+                margin-top:6px;
+            }
+
+            #progressContainer,
+                #progressText{
+                    visibility: hidden;
+                    transition: opacity 0.3s;
+            }
+        
+            .active{
+                background:#ff4d6d !important;
+                box-shadow:0 0 15px rgba(255,77,109,0.6);
+            }
         </style>
     </head>
 
@@ -165,40 +374,61 @@
         <button id="darkToggle" onclick="toggleDarkMode()">🌙</button>
         <h1>🌸 Hiragana & Katakana Trainer 🌸</h1>
 
-        <div class="card">
-            <div class="mode-switch">
-                <label>
-                    <input type="radio" name="mode" value="hiragana" checked>
-                        Hiragana
-                </label>
-                <label>
-                    <input type="radio" name="mode" value="katakana">
-                        Katakana
-                </label>
-            </div>
-            
+        <div class="app-Layout">
+            <div class="sidebar left">
+                <button data-mode="beginner" onclick="setMode('beginner')">
+                    <span class="icon">🌱</span>
+                    <span class="label">začátečník</span>
+                </button>
 
-            <div id="stats">
-                Úspěšnost: 0% (0 / 0)
-            </div>
-            <div id="progressText"></div>
-                <div id="progressContainer">
-                    <div id="progressBar"></div>
-                </div>  
+                <button data-mode="random" onclick="setMode('random')">
+                    <span class="icon">🎲</span>
+                    <span class="label">náhodně</span>
+                </button>
 
-            <div id="modeSwitch">
-                <button onclick="setMode('beginner')">🌱 Beginner</button>
-                <button onclick="setMode('random')">🎲 Random</button>
-                <button onclick="setMode('dictation')">🎧 Dictation</button>
+                <button data-mode="dictation" onclick="setMode('dictation')">
+                    <span class="icon">🎧</span>
+                    <span class="label">diktování</span>
+                </button>
+
+                <button data-mode="words" onclick="setMode('words')">
+                    <span class="icon">🈶</span>
+                    <span class="label">slovíčka</span>
+                </button>
             </div>
 
-            <div class="symbol" id="symbol">あ</div>
+            <div class="sidebar right">
+                <button onclick="setKana('hiragana')" data-kana="hiragana">
+                    <span class="icon">あ</span>
+                    <span class="label">hiragana</span>
+                </button>
 
-            <input type="text" id="answer" placeholder="Napiš přeložený znak...">
-            <br>
-            <button onclick="checkAnswer()">Zkontrolovat</button>
+                <button onclick="setKana('katakana')" data-kana="katakana">
+                    <span class="icon">ア</span>
+                    <span class="label">katakana</span>
+                </button>
+            </div>
 
-            <div class="result" id="result"></div>
+            <div class="card">
+                <div id="statsBox">
+                    <div id="stats">Úspěšnost: 0% (0 / 0)</div>
+                    <div id="progressText"></div>
+                    <div id="progressContainer">
+                        <div id="progressBar"></div>
+                    </div>
+                </div> 
+
+                <div class="main-content">
+                    <div class="symbol" id="symbol">あ</div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="answer" placeholder="Napiš...">
+                </div>
+
+                <button onclick="checkAnswer()">Zkontrolovat</button>
+
+                <div class="result" id="result"></div>
+            </div>
         </div>
 
         <script>
@@ -327,12 +557,32 @@
                     {symbol:"わ", romaji:"wa", weight:1},
                     {symbol:"を", romaji:"wo", weight:1},
                     {symbol:"ん", romaji:"n", weight:1}
-                ]
+                ],
+            ];
+                //Words
+            const wordList = [
+                    { kana:"おはよう", romaji:"ohayou", meanings:["dobré ráno","dobre rano"] },
+                    { kana:"おはようございます", romaji:"ohayou gozaimasu", meanings:["dobré ráno (zdvořile)","dobre rano (zdvorilo)"] },
+                    { kana:"こんにちは", romaji:"konnichiwa", meanings:["dobrý den","dobry den"] },
+                    { kana:"こんばんは", romaji:"konbanwa", meanings:["dobrý večer","dobry vecer"] },
+                    { kana:"さようなら", romaji:"sayounara", meanings:["sbohem","dovidenia","zbohem"] },
+                    { kana:"おやすみ", romaji:"oyasumi", meanings:["dobrou noc","dobru noc"] },
+                    { kana:"ありがとう", romaji:"arigatou", meanings:["děkuji","dakujem","díky"] },
+                    { kana:"ありがとうございます", romaji:"arigatou gozaimasu", meanings:["děkuji (zdvořile)","dakujem (zdvorilo)"] },
+                    { kana:"すみません", romaji:"sumimasen", meanings:["promiňte","prepacte","omlouvám se"] },
+                    { kana:"いいえ", romaji:"iie", meanings:["ne","nie"] },
+                    { kana:"いってきます", romaji:"ittekimasu", meanings:["odcházím","idem prec"] },
+                    { kana:"いってらっしゃい", romaji:"itterasshai", meanings:["běž a vrať se","chod a vrat sa"] },
+                    { kana:"ただいま", romaji:"tadaima", meanings:["jsem doma","som doma"] },
+                    { kana:"おかえりなさい", romaji:"okaerinasai", meanings:["vítej doma","vitaj doma"] },
+                    { kana:"いただきます", romaji:"itadakimasu", meanings:["děkuji za jídlo (před)","dakujem za jedlo (pred jedlom)"] },
+                    { kana:"ごちそうさまでした", romaji:"gochisousama deshita", meanings:["děkuji za jídlo (po)","dakujem za jedlo (po jedle)"] },
+                    { kana:"はじめまして", romaji:"hajimemashite", meanings:["těší mě","tesi ma"] },
+                    { kana:"よろしくおねがいします", romaji:"yoroshiku onegaishimasu", meanings:["těší mě (formálně)","tesi ma (formal)"] }
             ];
 
-
-
             let currentSet = hiragana;
+            let currentKana = "hiragana";
             let current = null;
             let lastSymbol = null;
             let totalCount = 0;
@@ -353,17 +603,107 @@
             });
 
             function setMode(mode) {
+
                 difficultyMode = mode;
+
+                const input = document.getElementById("answer");
+                const progress = document.getElementById("progressContainer");
+                const progressText = document.getElementById("progressText");
+
+                // ⭐ Progress bar visibility
+                if (mode === "beginner") {
+                    updateBeginnerSet();
+                    progress.style.visibility = "visible";
+                    progressText.style.visibility = "visible";
+                    progress.style.opacity = "1";
+                    progressText.style.opacity = "1";
+                } else {
+                    progress.style.visibility = "hidden";
+                    progressText.style.visibility = "hidden";
+                    progress.style.opacity = "0";
+                    progressText.style.opacity = "0";
+                }
+
+                // ⭐ Placeholder
+                if (mode === "words") {
+                    input.placeholder = "Napiš význam slova v CZ/SK...";
+                } else if (mode === "dictation") {
+                    input.placeholder = "Napiš co slyšíš v romaji...";
+                } else {
+                    input.placeholder = "Napiš romaji...";
+                }
+
+                applyState();
+                updateStats();
+
+                // ⭐ Mode logic
                 if (mode === "beginner") {
                     updateBeginnerSet();
                 }
+
                 if (mode === "random") {
-                    const selected = document.querySelector('input[name="mode"]:checked').value;
-                    currentSet = selected === "hiragana" ? hiragana : katakana;
+                    currentSet = currentKana === "hiragana" ? hiragana : katakana;
                 }
+
                 if (mode === "dictation") {
                     currentSet = hiragana;
                 }
+
+                generateSymbol();
+            }
+
+            function applyState(){
+                if (difficultyMode === "random") {
+                    currentSet = currentKana === "hiragana" ? hiragana : katakana;
+                }
+
+                if (difficultyMode === "dictation") {
+                    currentSet = hiragana;
+                }
+
+                if (difficultyMode === "beginner") {
+                    updateBeginnerSet();
+                }
+
+                updateActiveMode(difficultyMode);
+                updateActiveKana(currentKana);
+
+                generateSymbol();
+            }
+
+            function updateActiveMode(mode){
+                document.querySelectorAll(".sidebar.left button").forEach(btn=>{
+                    btn.classList.remove("active");
+                });
+
+                const btn = document.querySelector(`[data-mode="${mode}"]`);
+                if(btn) btn.classList.add("active");
+            }
+
+            function updateActiveKana(type){
+                document.querySelectorAll(".sidebar.right button").forEach(btn=>{
+                    btn.classList.remove("active");
+                });
+
+                const btn = document.querySelector(`[data-kana="${type}"]`);
+                if(btn) btn.classList.add("active");
+            }
+
+            function setKana(type){
+                currentKana = type;
+                applyState();
+                if(type === "hiragana"){
+                    currentSet = hiragana;
+                    document.querySelector('input[value="hiragana"]').checked = true;
+                } else {
+                    currentSet = katakana;
+                    document.querySelector('input[value="katakana"]').checked = true;
+                }
+
+                if (difficultyMode === "random") {
+                    currentSet = currentKana === "hiragana" ? hiragana : katakana;
+                }
+                
                 generateSymbol();
             }
 
@@ -395,6 +735,13 @@
             }
 
             function generateSymbol() {
+                if (difficultyMode === "words"){
+                    current = wordList[Math.floor(Math.random()*wordList.length)];
+                    document.getElementById("symbol").textContent = current.kana;
+                    document.getElementById("answer").value = "";
+                    document.getElementById("result").textContent = "";
+                    return;
+                }
                 let candidate = null;
                 do {
                     const totalWeight =
@@ -441,27 +788,53 @@
 
             function checkAnswer() {
                 totalCount++;
+
                 if (difficultyMode === "beginner") {
                     levelTotal++;
                 }
-                const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
+                const userAnswer = document.getElementById("answer").value;
 
-                if (userAnswer === current.romaji) {
+                if (difficultyMode === "words") {
+                    const user = normalize(userAnswer);
+                    const isCorrect = current.meanings.some(m =>
+                        normalize(m) === user
+                    );
+                    if (isCorrect) {
+                        document.getElementById("result").textContent = "✔ Správně!";
+                        document.getElementById("result").style.color = "green";
+                        correctCount++;
+                        updateStats();
+                        setTimeout(generateSymbol, 1000);
+                    } else {
+                        document.getElementById("result").textContent =
+                            "❌ Správně: " + current.meanings.join(" / ");
+                        document.getElementById("result").style.color = "red";
+
+                        updateStats();
+
+                        setTimeout(generateSymbol, 1800);
+                    }
+                    return;
+                }
+
+                const answer = userAnswer.toLowerCase().trim();
+                if (answer === current.romaji) {
                     current.weight = Math.max(1, current.weight - 1);
                     document.getElementById("result").textContent = "✔ Správně!";
                     document.getElementById("result").style.color = "green";
-                    setTimeout(generateSymbol, 800);
                     correctCount++;
                     if (difficultyMode === "beginner") {
                         levelCorrect++;
                     }
                     updateStats();
+                    setTimeout(generateSymbol, 800);
                 } else {
                     current.weight += 2;
-                    document.getElementById("result").textContent = "❌ Správně je: " + current.romaji;
+                    document.getElementById("result").textContent =
+                        "❌ Správně je: " + current.romaji;
                     document.getElementById("result").style.color = "red";
-                    setTimeout(generateSymbol, 1500);
                     updateStats();
+                    setTimeout(generateSymbol, 1500);
                 }
             }
 
@@ -489,17 +862,24 @@
                 document.getElementById("stats").textContent =
                     `Úspěšnost: ${percent}% (${correctCount} / ${totalCount})`;
                 if (difficultyMode === "beginner") {
-                    const progressPercent = Math.round((unlockedRows / beginnerRows.length) * 100);
-                    document.getElementById("progressText").textContent =
-                    "Beginner level: " + unlockedRows + " / " + beginnerRows.length;
-                    document.getElementById("progressBar").style.width =
-                    progressPercent + "%";
+                    const accuracy = levelTotal === 0 ? 0 : levelCorrect / levelTotal;
+                    const volume = Math.min(1, levelTotal / MIN_ANSWERS_FOR_UNLOCK);
 
-                } else {
-                    document.getElementById("progressText").textContent = "";
-                    document.getElementById("progressBar").style.width = "0%";
+                    const progressPercent = Math.round(accuracy * volume * 100);
+                    document.getElementById("progressText").textContent =
+                    `Level ${unlockedRows} • ${progressPercent}% • ${levelCorrect}/${levelTotal}`;
+                    document.getElementById("progressBar").style.width = progressPercent + "%";
                 }
             }
+
+            function normalize(text){
+                return text
+                    .toLowerCase()
+                    .trim()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, ""); // odstraní diakritiku
+            }
+
             function toggleDarkMode(){
                 document.documentElement.classList.toggle("dark");
                 const isDark =
@@ -509,7 +889,7 @@
             if (localStorage.getItem("darkMode") === "true"){
                 document.documentElement.classList.add("dark");
             }
-            generateSymbol();
+            applyState();
         </script>
     </body>
 </html>

@@ -331,10 +331,88 @@
                 min-width:70px;
             }
 
+            .patch-panel{
+                position: fixed;
+                right: 20px;
+                bottom: 60px;
+
+                width: 260px;
+                max-height: 300px;
+                overflow-y: auto;
+
+                background: rgba(20, 20, 20, 0.6);
+                backdrop-filter: blur(10px);
+
+                border-radius: 16px;
+                padding: 12px;
+
+                color: #eee;
+                font-size: 13px;
+                text-align: left;
+                line-height: 1.5;
+
+                box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+                opacity: 0;
+                pointer-events: none;
+                transform: translateY(10px);
+
+                transition: 0.3s;
+            }
+
+            .patch-panel ul{
+                text-align: left;
+                padding-left: 18px;
+                margin: 6px 0;
+            }
+
+            .patch-panel li{
+                margin-bottom: 4px;
+                line-height: 1.4;
+            }
+
+            .patch-panel.open{
+                opacity: 1;
+                pointer-events: auto;
+                transform: translateY(0);
+            }
+
+            .patch-panel h3{
+                margin-bottom:10px;
+            }
+
+            .panel-panel strong{
+                display: block;
+                margin-top: 10px;
+                margin-bottom: 4px;
+                color: #ff4d6d;
+            }
+
+            #patchToggle{
+                position: fixed;
+                right: 20px;
+                bottom: 30px;
+
+                width: 44px;
+                height: 44px;
+
+                border-radius: 50%;
+                background: #BC002D;
+                color: white;
+
+                display:flex;
+                align-items:center;
+                justify-content:center;
+
+                cursor:pointer;
+
+                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            }
+
             #darkToggle{
                 position:fixed;
                 top:20px;
-                right:20px;
+                left:20px;
                 width:50px;
                 height:50px;
                 border-radius:50%;
@@ -446,7 +524,42 @@
 
                 <div class="result" id="result"></div>
             </div>
-            <div id="appVersion">v0.5.1</div>
+            <div id="patchPanel" class="patch-panel">
+                <h3>🌸 v0.5 – Learning Upgrade</h3>
+                <strong>✨ Beginner Mode upgrade</strong>
+                <ul>
+                    <li>Progress bar teď správně reflektuje i špatné odpovědi</li>
+                    <li>Přesnější postup levelu</li>
+                    <li>Snad lepší pocit z progresu</li>
+                </ul>
+                <strong>🎯 UI Improvements</strong>
+                <ul>
+                    <li>Stabilnější layout (už nic neskáče)</li>
+                    <li>Větší a čitelnější znaky v beginner/random módu</li>
+                    <li>Lepší zobrazení delších slov</li>
+                </ul>
+                <strong>📚 Words Mode</strong>
+                <ul>
+                    <li>Upravená velikost textu pro pohodlné čtení</li>
+                    <li>Lepší rozložení delších výrazů</li>
+                </ul>
+                <strong>🌓 Quality of Life</strong>
+                <ul>
+                    <li>Dark mode vylepšen</li>
+                    <li>Přidaná verze aplikace</li>
+                    <li>Nový changelog panel</li>
+                </ul>
+                <h3>🌸 v0.5.2 – Dodatek</h3>
+                <strong>✨ Words mode</strong>
+                <ul>
+                    <li>Nová slovní zásoba z Genki učebnice</li>
+                    <li>Témata: School, Person, Time, Numbers a další</li>
+                </ul>
+            </div>
+
+            <button id="patchToggle" onclick="togglePatch()">📜</button>
+
+            <div id="appVersion">v0.5.2</div>
         </div>
 
         <script>
@@ -579,24 +692,64 @@
             ];
                 //Words
             const wordList = [
+                    //pozdravy
                     { kana:"おはよう", romaji:"ohayou", meanings:["dobré ráno","dobre rano"] },
-                    { kana:"おはようございます", romaji:"ohayou gozaimasu", meanings:["dobré ráno (zdvořile)","dobre rano (zdvorilo)"] },
                     { kana:"こんにちは", romaji:"konnichiwa", meanings:["dobrý den","dobry den"] },
                     { kana:"こんばんは", romaji:"konbanwa", meanings:["dobrý večer","dobry vecer"] },
                     { kana:"さようなら", romaji:"sayounara", meanings:["sbohem","dovidenia","zbohem"] },
                     { kana:"おやすみ", romaji:"oyasumi", meanings:["dobrou noc","dobru noc"] },
                     { kana:"ありがとう", romaji:"arigatou", meanings:["děkuji","dakujem","díky"] },
-                    { kana:"ありがとうございます", romaji:"arigatou gozaimasu", meanings:["děkuji (zdvořile)","dakujem (zdvorilo)"] },
                     { kana:"すみません", romaji:"sumimasen", meanings:["promiňte","prepacte","omlouvám se"] },
                     { kana:"いいえ", romaji:"iie", meanings:["ne","nie"] },
                     { kana:"いってきます", romaji:"ittekimasu", meanings:["odcházím","idem prec"] },
-                    { kana:"いってらっしゃい", romaji:"itterasshai", meanings:["běž a vrať se","chod a vrat sa"] },
                     { kana:"ただいま", romaji:"tadaima", meanings:["jsem doma","som doma"] },
                     { kana:"おかえりなさい", romaji:"okaerinasai", meanings:["vítej doma","vitaj doma"] },
-                    { kana:"いただきます", romaji:"itadakimasu", meanings:["děkuji za jídlo (před)","dakujem za jedlo (pred jedlom)"] },
-                    { kana:"ごちそうさまでした", romaji:"gochisousama deshita", meanings:["děkuji za jídlo (po)","dakujem za jedlo (po jedle)"] },
-                    { kana:"はじめまして", romaji:"hajimemashite", meanings:["těší mě","tesi ma"] },
-                    { kana:"よろしくおねがいします", romaji:"yoroshiku onegaishimasu", meanings:["těší mě (formálně)","tesi ma (formal)"] }
+                    { kana:"いただきます", romaji:"itadakimasu", meanings:["děkuji za jídlo (před)","dakujem za jedlo (pred)"] },
+                    { kana:"ごちそうさまでした", romaji:"gochisousama deshita", meanings:["děkuji za jídlo (po)","dakujem za jedlo (po)"] },
+                    // SCHOOL
+                    { kana:"だいがく", romaji:"daigaku", meanings:["vysoká škola","univerzita","vysoka skola","univerzita"] },
+                    { kana:"こうこう", romaji:"koukou", meanings:["střední škola","stredna skola"] },
+                    { kana:"がくせい", romaji:"gakusee", meanings:["student","študent"] },
+                    { kana:"だいがくせい", romaji:"daigakusee", meanings:["vysokoškolský student","vysokoskolsky student","vysokoškolský študent","vysokoskolsky student"] },
+                    { kana:"りゅうがくせい", romaji:"ryuugakusee", meanings:["zahraniční student","zahranicni student","zahraničný študent","zahranicny student"] },
+                    { kana:"せんせい", romaji:"sensee", meanings:["učitel","učitelka","profesor","ucitel","ucitelka"] },
+                    { kana:"いちねんせい", romaji:"ichinensee", meanings:["student prvního ročníku","student prvniho rocniku","študent prvého ročníka","student prveho rocnika"] },
+                    { kana:"せんこう", romaji:"senkou", meanings:["obor","obor studia","odbor","odbor studia"] },
+
+                    // PERSON
+                    { kana:"わたし", romaji:"watashi", meanings:["já","ja"] },
+                    { kana:"ともだち", romaji:"tomodachi", meanings:["kamarád","kamarad","kamarádka","kamaradka","kamarát","kamarat"] },
+                    { kana:"にほんじん", romaji:"nihonjin", meanings:["Japonec","japonec","Japonec (národnost)","japonec"] },
+
+                    // TIME
+                    { kana:"いま", romaji:"ima", meanings:["teď","ted","teraz"] },
+                    { kana:"ごぜん", romaji:"gozen", meanings:["dopoledne","dopoludnia","AM"] },
+                    { kana:"ごご", romaji:"gogo", meanings:["odpoledne","popoludnie","PM"] },
+                    { kana:"いちじ", romaji:"ichiji", meanings:["jedna hodina","jedna hodina"] },
+                    { kana:"はん", romaji:"han", meanings:["půl","pul","pol"] },
+                    { kana:"にじはん", romaji:"nijihan", meanings:["půl třetí","pul treti","pol tretej"] },
+
+                    // OTHERS
+                    { kana:"にほん", romaji:"nihon", meanings:["Japonsko","japonsko"] },
+                    { kana:"にほんご", romaji:"nihongo", meanings:["japonština","japonstina","japončina","japoncina"] },
+                    { kana:"でんわ", romaji:"denwa", meanings:["telefon","telefón","telefon"] },
+
+                    // NUMBERS
+                    { kana:"ぜろ", romaji:"zero", meanings:["nula"] },
+                    { kana:"れい", romaji:"rei", meanings:["nula"] },
+                    { kana:"いち", romaji:"ichi", meanings:["jedna"] },
+                    { kana:"に", romaji:"ni", meanings:["dva"] },
+                    { kana:"さん", romaji:"san", meanings:["tři","tri"] },
+                    { kana:"よん", romaji:"yon", meanings:["čtyři","ctyri","štyri","styri"] },
+                    { kana:"し", romaji:"shi", meanings:["čtyři","ctyri","štyri","styri"] },
+                    { kana:"ご", romaji:"go", meanings:["pět","pet","päť","pat"] },
+                    { kana:"ろく", romaji:"roku", meanings:["šest","sest"] },
+                    { kana:"なな", romaji:"nana", meanings:["sedm"] },
+                    { kana:"しち", romaji:"shichi", meanings:["sedm"] },
+                    { kana:"はち", romaji:"hachi", meanings:["osm","osem"] },
+                    { kana:"きゅう", romaji:"kyuu", meanings:["devět","devet","deväť","devat"] },
+                    { kana:"く", romaji:"ku", meanings:["devět","devet","deväť","devat"] },
+                    { kana:"じゅう", romaji:"juu", meanings:["deset","desat"] },
             ];
 
             let currentSet = hiragana;
@@ -896,6 +1049,10 @@
                     `Level ${unlockedRows} • ${progressPercent}% • ${levelCorrect}/${levelTotal}`;
                     document.getElementById("progressBar").style.width = progressPercent + "%";
                 }
+            }
+
+            function togglePatch(){
+                document.getElementById("patchPanel").classList.toggle("open");
             }
 
             function normalize(text){

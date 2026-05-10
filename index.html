@@ -525,41 +525,16 @@
                 <div class="result" id="result"></div>
             </div>
             <div id="patchPanel" class="patch-panel">
-                <h3>🌸 v0.5 – Learning Upgrade</h3>
+                <h3>🌸 v0.6 – Katakana Upgrade</h3>
                 <strong>✨ Beginner Mode upgrade</strong>
                 <ul>
-                    <li>Progress bar teď správně reflektuje i špatné odpovědi</li>
-                    <li>Přesnější postup levelu</li>
-                    <li>Snad lepší pocit z progresu</li>
-                </ul>
-                <strong>🎯 UI Improvements</strong>
-                <ul>
-                    <li>Stabilnější layout (už nic neskáče)</li>
-                    <li>Větší a čitelnější znaky v beginner/random módu</li>
-                    <li>Lepší zobrazení delších slov</li>
-                </ul>
-                <strong>📚 Words Mode</strong>
-                <ul>
-                    <li>Upravená velikost textu pro pohodlné čtení</li>
-                    <li>Lepší rozložení delších výrazů</li>
-                </ul>
-                <strong>🌓 Quality of Life</strong>
-                <ul>
-                    <li>Dark mode vylepšen</li>
-                    <li>Přidaná verze aplikace</li>
-                    <li>Nový changelog panel</li>
-                </ul>
-                <h3>🌸 v0.5.3 – Dodatek</h3>
-                <strong>✨ Words mode</strong>
-                <ul>
-                    <li>Nová slovní zásoba z Genki učebnice</li>
-                    <li>Témata: School, Person, Time, Numbers a další</li>
+                    <li>Katakana nyní funguje v beginner módu</li>
                 </ul>
             </div>
 
             <button id="patchToggle" onclick="togglePatch()">📜</button>
 
-            <div id="appVersion">v0.5.3</div>
+            <div id="appVersion">v0.6</div>
         </div>
 
         <script>
@@ -617,7 +592,7 @@
                 {symbol:"ぱ", romaji:"pa", weight:1},{symbol:"ぴ", romaji:"pi", weight:1},{symbol:"ぷ", romaji:"pu", weight:1},{symbol:"ぺ", romaji:"pe", weight:1},{symbol:"ぽ", romaji:"po", weight:1}
             ];
         // Beginner set  
-            const beginnerRows = [
+            const beginnerRowsHiragana = [
                 [
                     {symbol:"あ", romaji:"a", weight:1},
                     {symbol:"い", romaji:"i", weight:1},
@@ -690,6 +665,76 @@
                     {symbol:"ん", romaji:"n", weight:1}
                 ],
             ];
+
+            const beginnerRowsKatakana = [
+                [
+                    {symbol:"ア", romaji:"a", weight:1},
+                    {symbol:"イ", romaji:"i", weight:1},
+                    {symbol:"ウ", romaji:"u", weight:1},
+                    {symbol:"エ", romaji:"e", weight:1},
+                    {symbol:"オ", romaji:"o", weight:1}
+                ],
+                [
+                    {symbol:"カ", romaji:"ka", weight:1},
+                    {symbol:"キ", romaji:"ki", weight:1},
+                    {symbol:"ク", romaji:"ku", weight:1},
+                    {symbol:"ケ", romaji:"ke", weight:1},
+                    {symbol:"コ", romaji:"ko", weight:1}
+                ],
+                [
+                    {symbol:"サ", romaji:"sa", weight:1},
+                    {symbol:"シ", romaji:"shi", weight:1},
+                    {symbol:"ス", romaji:"su", weight:1},
+                    {symbol:"セ", romaji:"se", weight:1},
+                    {symbol:"ソ", romaji:"so", weight:1}
+                ],
+                [
+                    {symbol:"タ", romaji:"ta", weight:1},
+                    {symbol:"チ", romaji:"chi", weight:1},
+                    {symbol:"ツ", romaji:"tsu", weight:1},
+                    {symbol:"テ", romaji:"te", weight:1},
+                    {symbol:"ト", romaji:"to", weight:1}
+                ],
+                [
+                    {symbol:"ナ", romaji:"na", weight:1},
+                    {symbol:"ニ", romaji:"ni", weight:1},
+                    {symbol:"ヌ", romaji:"nu", weight:1},
+                    {symbol:"ネ", romaji:"ne", weight:1},
+                    {symbol:"ノ", romaji:"no", weight:1}
+                ],
+                [
+                    {symbol:"ハ", romaji:"ha", weight:1},
+                    {symbol:"ヒ", romaji:"hi", weight:1},
+                    {symbol:"フ", romaji:"fu", weight:1},
+                    {symbol:"ヘ", romaji:"he", weight:1},
+                    {symbol:"ホ", romaji:"ho", weight:1}
+                ],
+                [
+                    {symbol:"マ", romaji:"ma", weight:1},
+                    {symbol:"ミ", romaji:"mi", weight:1},
+                    {symbol:"ム", romaji:"mu", weight:1},
+                    {symbol:"メ", romaji:"me", weight:1},
+                    {symbol:"モ", romaji:"mo", weight:1}
+                ],
+                [
+                    {symbol:"ヤ", romaji:"ya", weight:1},
+                    {symbol:"ユ", romaji:"yu", weight:1},
+                    {symbol:"ヨ", romaji:"yo", weight:1}
+                ],
+                [
+                    {symbol:"ラ", romaji:"ra", weight:1},
+                    {symbol:"リ", romaji:"ri", weight:1},
+                    {symbol:"ル", romaji:"ru", weight:1},
+                    {symbol:"レ", romaji:"re", weight:1},
+                    {symbol:"ロ", romaji:"ro", weight:1}
+                ],
+                [
+                    {symbol:"ワ", romaji:"wa", weight:1},
+                    {symbol:"ヲ", romaji:"wo", weight:1},
+                    {symbol:"ン", romaji:"n", weight:1}
+                ]
+            ];
+
                 //Words
             const wordList = [
                     //pozdravy
@@ -845,10 +890,19 @@
             let streak = 0;
             let bestStreak = 0;
             let difficultyMode = "random";
-            let unlockedRows = 1;
-            let levelTotal = 0;
-            let levelCorrect = 0;
             const MIN_ANSWERS_FOR_UNLOCK = 10;
+            const beginnerProgress = {
+                hiragana: {
+                    unlockedRows: 1,
+                    levelTotal: 0,
+                    levelCorrect: 0
+                },
+                katakana: {
+                    unlockedRows: 1,
+                    levelTotal: 0,
+                    levelCorrect: 0
+                }
+            };
 
             document.getElementById("answer").addEventListener("keydown", function(event) {
                 if (event.key === "Enter") {
@@ -946,43 +1000,49 @@
 
             function setKana(type){
                 currentKana = type;
-                applyState();
-                if(type === "hiragana"){
-                    currentSet = hiragana;
-                    document.querySelector('input[value="hiragana"]').checked = true;
-                } else {
-                    currentSet = katakana;
-                    document.querySelector('input[value="katakana"]').checked = true;
-                }
-
                 if (difficultyMode === "random") {
-                    currentSet = currentKana === "hiragana" ? hiragana : katakana;
+                    currentSet =
+                        currentKana === "hiragana"
+                            ? hiragana
+                            : katakana;
                 }
-                
+                if (difficultyMode === "beginner") {
+                    updateBeginnerSet();
+                }
+                if (difficultyMode === "dictation") {
+                    currentSet = hiragana;
+                }
+                updateStats();
+                updateActiveKana(currentKana);
                 generateSymbol();
             }
 
             function updateBeginnerSet() {
-                    let newSet = [];
-                for (let i = 0; i < unlockedRows; i++) {
-                    let row = beginnerRows[i];
+                let newSet = [];
+                const progress = beginnerProgress[currentKana];
+                const activeRows =
+                    currentKana === "hiragana"
+                        ? beginnerRowsHiragana
+                        : beginnerRowsKatakana;
+                for (let i = 0; i < progress.unlockedRows; i++) {
+                    let row = activeRows[i];
                     row.forEach(item => {
                         let copy = {
                             symbol: item.symbol,
                             romaji: item.romaji,
                             weight: 1
                         };
-                        const distance = (unlockedRows - 1) - i;
+                        const distance =
+                            (progress.unlockedRows - 1) - i;
                         if (distance === 0) {
-                            copy.weight = 6;   
+                            copy.weight = 6;
                         }
                         else if (distance === 1) {
-                            copy.weight = 3;       
+                            copy.weight = 3;
                         }
                         else {
-                            copy.weight = 1; 
+                            copy.weight = 1;
                         }
-
                         newSet.push(copy);
                     });
                 }
@@ -1053,7 +1113,7 @@
                 totalCount++;
 
                 if (difficultyMode === "beginner") {
-                    levelTotal++;
+                    beginnerProgress[currentKana].levelTotal++;
                 }
                 const userAnswer = document.getElementById("answer").value;
 
@@ -1087,7 +1147,7 @@
                     document.getElementById("result").style.color = "green";
                     correctCount++;
                     if (difficultyMode === "beginner") {
-                        levelCorrect++;
+                        beginnerProgress[currentKana].levelCorrect++;
                     }
                     updateStats();
                     setTimeout(generateSymbol, 800);
@@ -1102,6 +1162,12 @@
             }
 
             function updateStats() {
+                const progress = beginnerProgress[currentKana];
+
+                const unlockedRows = progress.unlockedRows;
+                const levelTotal = progress.levelTotal;
+                const levelCorrect = progress.levelCorrect;
+
                 const percent = totalCount === 0
                     ? 0
                     : Math.round((correctCount / totalCount) * 100);
@@ -1112,13 +1178,13 @@
                     difficultyMode === "beginner" &&
                     levelTotal >= MIN_ANSWERS_FOR_UNLOCK &&
                     levelPercent >= 90 &&
-                    unlockedRows < beginnerRows.length
+                    unlockedRows < (currentKana === "hiragana" ? beginnerRowsHiragana.length : beginnerRowsKatakana.length)
                 ) {
-                    unlockedRows++;
+                    progress.unlockedRows++;
                     updateBeginnerSet();
                     // RESET level statistiky
-                    levelTotal = 0;
-                    levelCorrect = 0;
+                    progress.levelTotal = 0;
+                    progress.levelCorrect = 0;
                     document.getElementById("result").textContent =
                         "🌸 Odemčena nová řada!";
                 }
